@@ -8,7 +8,8 @@ CONF_SOURCE: Final = "source"
 CONF_BOAT_KEY: Final = "boat_key"
 CONF_INTEGRATION_KEY: Final = "integration_key"
 
-# Options and their defaults: those of noforeignland's own plugin (X-12 §8.1, §8.3)
+# Options and their defaults (OD-43): noforeignland's own plugin (X-12 §8.1, §8.3), but sent
+# hourly with a point every 6 h when stationary (owner, amended v0.30)
 CONF_SAMPLE_S: Final = "sample_seconds"
 CONF_MIN_MOVE_M: Final = "min_move_m"
 CONF_MIN_SPEED_KN: Final = "min_speed_kn"
@@ -20,8 +21,8 @@ DEFAULTS: Final[dict[str, float]] = {
     CONF_SAMPLE_S: 60,
     CONF_MIN_MOVE_M: 80,
     CONF_MIN_SPEED_KN: 1.5,
-    CONF_KEEPALIVE_H: 24,
-    CONF_SEND_MIN: 10,
+    CONF_KEEPALIVE_H: 6,
+    CONF_SEND_MIN: 60,
     CONF_CAPACITY: 10_000,
 }
 

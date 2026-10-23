@@ -12,12 +12,13 @@ but it works with any `device_tracker` that has a latitude and longitude.
 ## What it does
 
 - **Logs** your boat's position once a minute at most, only when the boat has moved 80 m
-  and goes faster than 1.5 kn, plus one point a day when it stays put, so noforeignland
-  keeps showing the boat as active. Impossible jumps (GPS glitches) are dropped.
+  and goes faster than 1.5 kn, plus one point every 6 hours when it stays put, so
+  noforeignland keeps showing the boat as active. Impossible jumps (GPS glitches) are dropped.
 - **Keeps** the points in Home Assistant's storage, through restarts and power cuts. When
   the buffer is full (10 000 points, about a week under way), every second old point is
   dropped rather than the oldest ones, so a long passage keeps its shape.
-- **Sends** them every 10 minutes, oldest first. A point leaves the buffer only once
+- **Sends** them once an hour, oldest first: the track keeps every minute's detail, the map
+  is at most an hour late. A point leaves the buffer only once
   noforeignland has accepted it, so nothing is sent twice. Without internet, it waits.
 - If noforeignland **refuses** a key, sending stops, the points are kept and Home
   Assistant shows a repair notice.

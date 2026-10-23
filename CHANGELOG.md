@@ -8,7 +8,7 @@ versioning: SemVer.
 ### Added
 - First version (ovander/ha-vigie#93): shares a `device_tracker`'s positions on
   noforeignland. Logs a point when the boat has moved 80 m above 1.5 kn (one a minute at
-  most, one a day when stationary), keeps the points through restarts and internet outages,
-  and sends them every 10 minutes, oldest first, each point once. *Sharing* switch;
+  most, one every 6 hours when stationary), keeps the points through restarts and internet
+  outages, and sends them once an hour, oldest first, each point once. *Sharing* switch;
   *Status*, *Buffered points*, *Last point logged* and *Last send* sensors; a repair notice
   when noforeignland refuses a key; diagnostics with the keys redacted. English and French.

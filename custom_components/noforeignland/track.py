@@ -25,12 +25,12 @@ class Point:
 
 @dataclass(frozen=True)
 class SamplingConfig:
-    """X-12 §8.1 defaults, as noforeignland's own plugin (OD-43)."""
+    """X-12 §8.1 defaults, but a stationary point every 6 h, not 24 h (OD-43, amended)."""
 
     min_move_m: float = 80.0
     min_speed_kn: float = 1.5
     max_velocity_ms: float = 50.0
-    keepalive_s: float = 24 * 3600.0
+    keepalive_s: float = 6 * 3600.0
 
 
 class Decision(StrEnum):

@@ -27,7 +27,8 @@ LAST_SEND = "sensor.noforeignland_garnet_last_send"
 
 
 async def setup(hass: HomeAssistant, **options: float):
-    entry = make_entry(**options)
+    """Sends every 10 min unless told otherwise, to keep the scenarios short (default 60)."""
+    entry = make_entry(**{"send_minutes": 10, **options})
     entry.add_to_hass(hass)
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
@@ -84,6 +85,28 @@ async def test_f_nfl_03_sends_every_ten_minutes(
     assert state(hass, STATUS) == "ok"
     assert state(hass, LAST_SEND) != "unknown"
     assert state(hass, LAST_POINT) != "unknown"
+
+
+async def test_f_nfl_03_defaults_send_hourly_and_six_hourly_point(
+    hass: HomeAssistant, boat: Boat, aioclient_mock: AiohttpClientMocker
+) -> None:
+    """OD-43 as amended by the owner: a point a minute, sent once an hour; still, every 6 h."""
+    aioclient_mock.post(URL, json={"status": "ok"})
+    entry = make_entry()
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+    await boat.run(120)
+    assert [len(t) for t in sent_tracks(aioclient_mock)] == [59, 60]
+    aioclient_mock.clear_requests()
+    aioclient_mock.post(URL, json={"status": "ok"})
+    boat.sog = 0.0
+    await boat.run(6 * 60)
+    # The point still waiting from minute 120, then the stationary one at 6 h
+    times = [p[0] for t in sent_tracks(aioclient_mock) for p in t]
+    assert len(times) == 1
+    await boat.run(60)
+    assert len([p for t in sent_tracks(aioclient_mock) for p in t]) == 2
 
 
 async def test_f_nfl_03_still_boat_logs_nothing(
@@ -147,7 +170,7 @@ async def test_f_nfl_04_retry_on_5xx_then_ok(
 async def test_f_nfl_05_restart_restores_the_buffer(
     hass: HomeAssistant, boat: Boat, aioclient_mock: AiohttpClientMocker, hass_storage: dict
 ) -> None:
-    entry = make_entry()
+    entry = make_entry(send_minutes=10)
     rows = [[1_790_000_000.0 + 60 * i, 43.5 + i / 1000, 7.25] for i in range(50)]
     hass_storage[f"{DOMAIN}.{entry.entry_id}"] = {
         "version": 1,

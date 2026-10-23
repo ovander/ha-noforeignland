@@ -55,9 +55,9 @@ def test_u_nfl_02_outlier():
 
 
 def test_u_nfl_03_keepalive():
-    still = Point(T0 + 24 * 3600 - 60, 43.5, 7.25)
+    still = Point(T0 + 6 * 3600 - 60, 43.5, 7.25)
     assert decide(START, still, 0.0, CFG) == Decision.TOO_CLOSE
-    assert decide(START, Point(T0 + 24 * 3600, 43.5, 7.25), 0.0, CFG) == Decision.KEEPALIVE
+    assert decide(START, Point(T0 + 6 * 3600, 43.5, 7.25), 0.0, CFG) == Decision.KEEPALIVE
     assert Decision.KEEPALIVE.kept and Decision.KEEP.kept and not Decision.TOO_SLOW.kept
 
 
