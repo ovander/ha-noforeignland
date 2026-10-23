@@ -7,7 +7,7 @@ returns: the track has no gap. Companion of [Vigie](https://github.com/ovander/h
 but it works with any `device_tracker` that has a latitude and longitude.
 
 > **Status: beta (P8).** Built and tested against a simulated noforeignland; the first real
-> sends wait for noforeignland's integration key.
+> sends wait for noforeignland's integration key, which will then be built in.
 
 ## What it does
 
@@ -35,11 +35,12 @@ somewhere that should stay private.
 - Home Assistant 2026.2.0 or later, with HACS.
 - A position: for example [Vigie](https://github.com/ovander/ha-vigie)'s
   `device_tracker.<boat>`.
-- Two keys:
-  - your **boat API key**: on noforeignland's website, *Account → Settings → Boat tracking
-    → API Key*;
-  - an **integration key** for this integration, from noforeignland
-    (`support@noforeignland.com`).
+- Your **boat API key**: on noforeignland's website, *Account → Settings → Boat tracking →
+  API Key*. That is the only key you enter.
+
+noforeignland's key for this integration is built in, as in noforeignland's own SignalK
+plugin. Until noforeignland has issued it, setup asks for one in the optional *Integration
+key* field; leave that field empty once a release includes it.
 
 ## Installation
 
@@ -48,7 +49,7 @@ somewhere that should stay private.
 2. Open *noforeignland tracking*, **Download** (only beta versions exist for now: turn on
    *Show beta versions* if HACS offers an older one), then restart Home Assistant.
 3. *Settings → Devices & services → + Add integration → noforeignland tracking*: pick the
-   boat's position (Vigie's boat is proposed) and enter the two keys. Nothing is sent during
+   boat's position (Vigie's boat is proposed) and enter its API key. Nothing is sent during
    setup.
 
 There is no separate configuration page: everything is in Home Assistant's own screens.

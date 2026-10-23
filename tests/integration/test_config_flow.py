@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from unittest.mock import patch
+
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
@@ -12,6 +14,9 @@ from custom_components.noforeignland.const import DEFAULTS, DOMAIN
 from tests.helpers import BOAT_KEY, INTEGRATION_KEY, SOURCE, Boat, make_entry
 
 USER_INPUT = {"source": SOURCE, "boat_key": BOAT_KEY, "integration_key": INTEGRATION_KEY}
+BUILT_IN = "11111111-2222-3333-4444-555555555555"
+NO_BUILT_IN = patch("custom_components.noforeignland.protocol.BUILTIN_INTEGRATION_KEY", "")
+WITH_BUILT_IN = patch("custom_components.noforeignland.protocol.BUILTIN_INTEGRATION_KEY", BUILT_IN)
 
 
 async def test_f_nfl_01_setup_sends_nothing(
@@ -100,3 +105,31 @@ async def test_options_defaults_and_change(hass: HomeAssistant, boat: Boat) -> N
     assert result["type"] is FlowResultType.CREATE_ENTRY
     assert entry.options["send_minutes"] == 30
     assert entry.runtime_data.cfg.min_move_m == 80  # reloaded with the options
+
+
+async def test_f_nfl_01_built_in_key_needs_only_the_boat_key(
+    hass: HomeAssistant, boat: Boat, aioclient_mock: AiohttpClientMocker
+) -> None:
+    """OD-45: with the key built in, setup asks for the source and the boat key only."""
+    with WITH_BUILT_IN:
+        result = await hass.config_entries.flow.async_init(
+            DOMAIN, context={"source": config_entries.SOURCE_USER}
+        )
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {"source": SOURCE, "boat_key": BOAT_KEY}
+        )
+        await hass.async_block_till_done()
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    assert result["data"] == {"source": SOURCE, "boat_key": BOAT_KEY, "integration_key": ""}
+
+
+async def test_f_nfl_01_no_built_in_key_asks_for_one(hass: HomeAssistant, boat: Boat) -> None:
+    with NO_BUILT_IN:
+        result = await hass.config_entries.flow.async_init(
+            DOMAIN, context={"source": config_entries.SOURCE_USER}
+        )
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {"source": SOURCE, "boat_key": BOAT_KEY}
+        )
+    assert result["type"] is FlowResultType.FORM
+    assert result["errors"] == {"integration_key": "integration_key_needed"}

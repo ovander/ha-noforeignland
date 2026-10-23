@@ -13,6 +13,7 @@ from custom_components.noforeignland.protocol import (
     classify,
     form,
     headers,
+    integration_key,
     is_integration_key,
 )
 from custom_components.noforeignland.track import Point
@@ -62,6 +63,21 @@ def test_u_nfl_06_request():
 )
 def test_u_nfl_07_answers(status, body, expected):
     assert classify(status, body) == expected
+
+
+def test_u_nfl_09_built_in_key_and_override(monkeypatch):
+    """OD-45: the owner's override, else the built-in key, else none."""
+    monkeypatch.setattr("custom_components.noforeignland.protocol.BUILTIN_INTEGRATION_KEY", "")
+    assert integration_key(None) is None
+    assert integration_key("  ") is None
+    assert integration_key(f" {KEY} ") == KEY
+    built_in = "11111111-2222-3333-4444-555555555555"
+    monkeypatch.setattr(
+        "custom_components.noforeignland.protocol.BUILTIN_INTEGRATION_KEY", built_in
+    )
+    assert integration_key(None) == built_in
+    assert integration_key("") == built_in
+    assert integration_key(KEY) == KEY
 
 
 def test_u_nfl_09_integration_key_format():

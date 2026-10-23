@@ -19,12 +19,23 @@ CHUNK_POINTS = 1000  # X-12 OD-2, until noforeignland confirms a limit
 ATTEMPTS = 3  # X-12 §8.3: on network errors and 5xx only
 TIMEOUT_S = 30.0  # times the attempt number
 
+# noforeignland's key for this integration, as its SignalK plugin ships its own (X-12 §4.1,
+# SPEC OD-45). Empty until noforeignland issues it: setup then asks for one.
+BUILTIN_INTEGRATION_KEY = ""
+
 _UUID = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
 
 
 def is_integration_key(key: str) -> bool:
     """noforeignland's integration keys are UUIDs (X-12 §4.1)."""
     return bool(_UUID.match(key.strip()))
+
+
+def integration_key(override: str | None) -> str | None:
+    """The key to send: the owner's override when set, else the built-in one, else none."""
+    if override and override.strip():
+        return override.strip()
+    return BUILTIN_INTEGRATION_KEY or None
 
 
 def headers(integration_key: str) -> dict[str, str]:
