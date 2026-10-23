@@ -6,8 +6,8 @@ Positions logged while the boat has no internet are kept and sent when the conne
 returns: the track has no gap. Companion of [Vigie](https://github.com/ovander/ha-vigie),
 but it works with any `device_tracker` that has a latitude and longitude.
 
-> **Status: in development (P8).** Built and tested against a simulated noforeignland; the
-> first real sends wait for noforeignland's integration key. Not released yet.
+> **Status: beta (P8).** Built and tested against a simulated noforeignland; the first real
+> sends wait for noforeignland's integration key.
 
 ## What it does
 
@@ -43,14 +43,40 @@ somewhere that should stay private.
 
 ## Installation
 
-Not released yet. Once it is: HACS → ⋮ → *Custom repositories* →
-`https://github.com/ovander/ha-noforeignland`, type **Integration**; download
-*noforeignland tracking*, restart Home Assistant, then *Settings → Devices & services →
-Add integration → noforeignland tracking*: pick the boat's position and enter the two
-keys. Nothing is sent during setup.
+1. HACS → ⋮ → *Custom repositories* → `https://github.com/ovander/ha-noforeignland`, type
+   **Integration**.
+2. Open *noforeignland tracking*, **Download** (only beta versions exist for now: turn on
+   *Show beta versions* if HACS offers an older one), then restart Home Assistant.
+3. *Settings → Devices & services → + Add integration → noforeignland tracking*: pick the
+   boat's position (Vigie's boat is proposed) and enter the two keys. Nothing is sent during
+   setup.
 
-The options (⋮ → *Configure*) change how often a position is checked, the minimum move and
-speed, the stationary point's interval, how often to send and the buffer size.
+There is no separate configuration page: everything is in Home Assistant's own screens.
+
+- **Keys:** *Settings → Devices & services → noforeignland tracking → ⋮ → Reconfigure*.
+- **Options:** the same page → **Configure**: how often the position is checked (60 s), the
+  minimum move (80 m) and speed (1.5 kn), the stationary point (every 6 h), how often to send
+  (every 60 min) and the buffer size (10 000 points).
+
+## On a dashboard
+
+The entities go on any dashboard. For example, an *Entities* card (edit a dashboard →
+**+ Add card** → *Manual*, then paste; replace `garnet` with your boat's name as it appears
+in the entity IDs):
+
+```yaml
+type: entities
+title: noforeignland
+entities:
+  - entity: switch.noforeignland_garnet_sharing
+  - entity: sensor.noforeignland_garnet_status
+  - entity: sensor.noforeignland_garnet_buffered_points
+  - entity: sensor.noforeignland_garnet_last_point_logged
+  - entity: sensor.noforeignland_garnet_last_send
+```
+
+*Sharing* can also be switched by an automation, for example off when the boat enters the
+home port's zone.
 
 ## Specification
 
