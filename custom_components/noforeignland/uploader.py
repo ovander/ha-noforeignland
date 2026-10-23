@@ -40,7 +40,17 @@ from .const import (
     STATUS_REJECTED,
     STATUS_WAITING,
 )
-from .protocol import ATTEMPTS, CHUNK_POINTS, TIMEOUT_S, URL, Outcome, classify, form, headers
+from .protocol import (
+    ATTEMPTS,
+    CHUNK_POINTS,
+    TIMEOUT_S,
+    URL,
+    Outcome,
+    classify,
+    form,
+    headers,
+    integration_key,
+)
 from .track import Buffer, Decision, Point, SamplingConfig, decide
 
 _LOGGER = logging.getLogger(__name__)
@@ -222,13 +232,15 @@ class Uploader:
 
     async def _async_send_chunk(self, session: aiohttp.ClientSession, chunk: list[Point]) -> bool:
         data = self.entry.data
+        key = integration_key(data.get(CONF_INTEGRATION_KEY))
+        if key is None:  # no override and no built-in key (OD-45)
+            self._reject("no integration key")
+            return False
         body = form(data[CONF_BOAT_KEY], chunk, self.version)
         for attempt in range(1, ATTEMPTS + 1):
             try:
                 async with asyncio.timeout(TIMEOUT_S * attempt):
-                    response = await session.post(
-                        URL, data=body, headers=headers(data[CONF_INTEGRATION_KEY])
-                    )
+                    response = await session.post(URL, data=body, headers=headers(key))
                     async with response:
                         answer = classify(response.status, await response.text())
             except (aiohttp.ClientError, TimeoutError) as err:

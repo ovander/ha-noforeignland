@@ -8,6 +8,7 @@ from homeassistant.components.diagnostics import async_redact_data
 from homeassistant.core import HomeAssistant
 
 from .const import CONF_BOAT_KEY, CONF_INTEGRATION_KEY
+from .protocol import integration_key
 from .uploader import NflConfigEntry
 
 TO_REDACT = {CONF_BOAT_KEY, CONF_INTEGRATION_KEY}
@@ -21,6 +22,14 @@ async def async_get_config_entry_diagnostics(
     return {
         "data": async_redact_data(dict(entry.data), TO_REDACT),
         "options": dict(entry.options),
+        # Which key is sent, never the key itself (OD-45)
+        "integration_key_source": (
+            "override"
+            if entry.data.get(CONF_INTEGRATION_KEY)
+            else "built-in"
+            if integration_key(None)
+            else "none"
+        ),
         "status": uploader.status,
         "sharing": uploader.sharing,
         "buffered_points": len(uploader.buffer),

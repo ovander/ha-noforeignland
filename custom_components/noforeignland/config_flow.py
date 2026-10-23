@@ -23,6 +23,7 @@ from homeassistant.helpers.selector import (
     TextSelectorType,
 )
 
+from . import protocol
 from .const import (
     CONF_BOAT_KEY,
     CONF_CAPACITY,
@@ -63,9 +64,19 @@ def _keys_errors(user_input: dict[str, Any]) -> dict[str, str]:
     errors: dict[str, str] = {}
     if not user_input[CONF_BOAT_KEY].strip():
         errors[CONF_BOAT_KEY] = "boat_key"
-    if not is_integration_key(user_input[CONF_INTEGRATION_KEY]):
+    override = user_input.get(CONF_INTEGRATION_KEY, "").strip()
+    if override and not is_integration_key(override):
         errors[CONF_INTEGRATION_KEY] = "integration_key"
+    elif not override and protocol.integration_key(None) is None:
+        errors[CONF_INTEGRATION_KEY] = "integration_key_needed"
     return errors
+
+
+def _keys(user_input: dict[str, Any]) -> dict[str, Any]:
+    """Keys as stored: the override only when given (OD-45: built in otherwise)."""
+    data = {k: v.strip() for k, v in user_input.items() if k != CONF_SOURCE}
+    data[CONF_INTEGRATION_KEY] = data.get(CONF_INTEGRATION_KEY, "")
+    return data
 
 
 class NflConfigFlow(ConfigFlow, domain=DOMAIN):
@@ -81,14 +92,15 @@ class NflConfigFlow(ConfigFlow, domain=DOMAIN):
                 self._abort_if_unique_id_configured()
                 state = self.hass.states.get(source)
                 title = state.name if state else source
-                return self.async_create_entry(title=title, data=user_input)
+                data = {CONF_SOURCE: source, **_keys(user_input)}
+                return self.async_create_entry(title=title, data=data)
         schema = vol.Schema(
             {
                 vol.Required(
                     CONF_SOURCE, default=vigie_tracker(self.hass) or vol.UNDEFINED
                 ): EntitySelector(EntitySelectorConfig(domain="device_tracker")),
                 vol.Required(CONF_BOAT_KEY): SECRET,
-                vol.Required(CONF_INTEGRATION_KEY): SECRET,
+                vol.Optional(CONF_INTEGRATION_KEY): SECRET,
             }
         )
         if user_input is not None:
@@ -104,9 +116,9 @@ class NflConfigFlow(ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             errors = _keys_errors(user_input)
             if not errors:
-                return self.async_update_reload_and_abort(entry, data_updates=user_input)
+                return self.async_update_reload_and_abort(entry, data_updates=_keys(user_input))
         schema = vol.Schema(
-            {vol.Required(CONF_BOAT_KEY): SECRET, vol.Required(CONF_INTEGRATION_KEY): SECRET}
+            {vol.Required(CONF_BOAT_KEY): SECRET, vol.Optional(CONF_INTEGRATION_KEY): SECRET}
         )
         return self.async_show_form(step_id="reconfigure", data_schema=schema, errors=errors)
 

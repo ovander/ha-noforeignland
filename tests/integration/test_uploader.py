@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from datetime import timedelta
+from unittest.mock import patch
 from urllib.parse import parse_qs
 
 import aiohttp
@@ -326,3 +327,32 @@ async def test_unload_and_remove(hass: HomeAssistant, boat: Boat, hass_storage: 
     await hass.config_entries.async_remove(entry.entry_id)
     await hass.async_block_till_done()
     assert f"{DOMAIN}.{entry.entry_id}" not in hass_storage
+
+
+async def test_f_nfl_built_in_key_is_sent(
+    hass: HomeAssistant, boat: Boat, aioclient_mock: AiohttpClientMocker
+) -> None:
+    """OD-45: no override, the built-in key goes in the header; diagnostics say which."""
+    built_in = "11111111-2222-3333-4444-555555555555"
+    aioclient_mock.post(URL, json={"status": "ok"})
+    with patch("custom_components.noforeignland.protocol.BUILTIN_INTEGRATION_KEY", built_in):
+        entry = await setup(hass)
+        hass.config_entries.async_update_entry(entry, data={**entry.data, "integration_key": ""})
+        await boat.run(10)
+        diagnostics = await async_get_config_entry_diagnostics(hass, entry)
+    assert aioclient_mock.mock_calls[0][3]["X-NFL-API-Key"] == built_in
+    assert diagnostics["integration_key_source"] == "built-in"
+    assert built_in not in json.dumps(diagnostics)
+
+
+async def test_f_nfl_no_key_at_all_is_a_rejection(
+    hass: HomeAssistant, boat: Boat, aioclient_mock: AiohttpClientMocker
+) -> None:
+    with patch("custom_components.noforeignland.protocol.BUILTIN_INTEGRATION_KEY", ""):
+        entry = await setup(hass)
+        hass.config_entries.async_update_entry(entry, data={**entry.data, "integration_key": ""})
+        await boat.run(10)
+        diagnostics = await async_get_config_entry_diagnostics(hass, entry)
+    assert aioclient_mock.call_count == 0
+    assert state(hass, STATUS) == "rejected"
+    assert diagnostics["integration_key_source"] == "none"

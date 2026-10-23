@@ -5,6 +5,13 @@ versioning: SemVer.
 
 ## [Unreleased]
 
+### Changed
+- noforeignland's integration key is built into the integration, as in noforeignland's own
+  SignalK plugin: setup asks only for the boat's API key. An optional *Integration key*
+  field overrides it, and is required only while the built-in key is still empty (until
+  noforeignland issues it). Diagnostics say which key is used, never the key
+  (ovander/ha-vigie#96, OD-45).
+
 ## [0.1.0-beta.1] - 2026-10-23
 
 First beta. Tested against a simulated noforeignland only: the first real sends wait for

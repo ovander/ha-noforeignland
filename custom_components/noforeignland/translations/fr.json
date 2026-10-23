@@ -7,25 +7,29 @@
         "data": {
           "source": "Position du bateau",
           "boat_key": "Clé API du bateau",
-          "integration_key": "Clé d'intégration"
+          "integration_key": "Clé d'intégration (facultatif)"
         },
         "data_description": {
           "source": "Un suivi d'appareil, par exemple le bateau de Vigie",
           "boat_key": "Sur le site de noforeignland : Compte → Paramètres → Suivi du bateau → Clé API",
-          "integration_key": "La clé fournie par noforeignland pour cette intégration (support@noforeignland.com)"
+          "integration_key": "Laissez vide : la clé de noforeignland pour cette intégration est incluse. À remplir seulement si noforeignland vous a donné votre propre clé."
         }
       },
       "reconfigure": {
         "title": "Changer les clés",
         "data": {
           "boat_key": "Clé API du bateau",
-          "integration_key": "Clé d'intégration"
+          "integration_key": "Clé d'intégration (facultatif)"
+        },
+        "data_description": {
+          "integration_key": "Laissez vide : la clé de noforeignland pour cette intégration est incluse. À remplir seulement si noforeignland vous a donné votre propre clé."
         }
       }
     },
     "error": {
       "boat_key": "Saisissez la clé API du bateau",
-      "integration_key": "La clé d'intégration est un UUID, par exemple 0f8fad5b-d9cb-469f-a165-70867728950e"
+      "integration_key": "La clé d'intégration est un UUID, par exemple 0f8fad5b-d9cb-469f-a165-70867728950e",
+      "integration_key_needed": "Cette version n'inclut pas encore la clé de noforeignland : saisissez une clé d'intégration"
     },
     "abort": {
       "already_configured": "Cette position est déjà partagée",

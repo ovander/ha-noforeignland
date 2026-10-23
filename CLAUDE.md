@@ -19,8 +19,11 @@ the same work package.
 
 - **Clean room.** noforeignland's SignalK plugin (`nfl-signalk`, MIT) is a reference for
   behaviour only (X-12); no code copied.
-- **Secrets.** The boat key and the integration key are never committed, never logged,
-  always redacted from diagnostics. Never use the SignalK plugin's shared key (X-12 §4.1).
+- **Keys (OD-45).** noforeignland's key for this integration is built in
+  (`protocol.BUILTIN_INTEGRATION_KEY`), as noforeignland's SignalK plugin ships its own; add
+  it only once noforeignland has issued it and agreed to its publication. Never use the
+  SignalK plugin's key (X-12 §4.1). The boat key and any override are never committed,
+  never logged, always redacted from diagnostics.
 - **No test send.** Nothing goes to noforeignland outside the send schedule: a point on the
   public map cannot be deleted (X-12 OD-5). Tests mock noforeignland (`aioclient_mock`);
   the only live checks are E-25 (a test boat) and E-26, run by the owner.
