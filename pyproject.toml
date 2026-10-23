@@ -1,0 +1,48 @@
+[project]
+name = "ha-noforeignland"
+version = "0.0.1"
+description = "Share a boat's track on noforeignland from Home Assistant, kept through internet outages"
+requires-python = ">=3.12"
+license = { text = "Apache-2.0" }
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+# Required by pytest-homeassistant-custom-component
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+# Pure modules only, as Vigie (TEST-001 §7 gate 2); module names, not file paths
+source = [
+    "custom_components.noforeignland.track",
+    "custom_components.noforeignland.protocol",
+]
+branch = true
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["RUF001", "RUF002", "RUF003"]  # allow typographic characters in docs/strings
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = [
+    "custom_components/noforeignland/track.py",
+    "custom_components/noforeignland/protocol.py",
+]
+
+[[tool.mypy.overrides]]
+module = ["homeassistant.*", "voluptuous.*"]
+ignore_missing_imports = true
+# The pure modules never use HA; mypy only reaches it through the package __init__'s
+# TYPE_CHECKING imports, and HA's 3.13 syntax cannot be parsed at python_version 3.12.
+follow_imports = "skip"
+
+[[tool.mypy.overrides]]
+# HA-side modules are outside the strict set (CLAUDE.md: strict on pure modules)
+module = ["noforeignland.uploader"]
+follow_imports = "skip"

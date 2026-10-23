@@ -1,0 +1,88 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Share the boat's track on noforeignland",
+        "description": "Positions are kept through internet outages and sent when the connection returns. Nothing is sent before the first position is logged.",
+        "data": {
+          "source": "Boat position",
+          "boat_key": "Boat API key",
+          "integration_key": "Integration key"
+        },
+        "data_description": {
+          "source": "A device tracker, for example Vigie's own boat",
+          "boat_key": "On noforeignland's website: Account → Settings → Boat tracking → API Key",
+          "integration_key": "The key noforeignland gave for this integration (support@noforeignland.com)"
+        }
+      },
+      "reconfigure": {
+        "title": "Change the keys",
+        "data": {
+          "boat_key": "Boat API key",
+          "integration_key": "Integration key"
+        }
+      }
+    },
+    "error": {
+      "boat_key": "Enter the boat's API key",
+      "integration_key": "The integration key is a UUID, like 0f8fad5b-d9cb-469f-a165-70867728950e"
+    },
+    "abort": {
+      "already_configured": "This position is already shared",
+      "reconfigure_successful": "Keys changed: sending starts again"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Logging and sending",
+        "data": {
+          "sample_seconds": "Check the position every",
+          "min_move_m": "Minimum move",
+          "min_speed_kn": "Minimum speed",
+          "keepalive_hours": "One point when stationary every",
+          "send_minutes": "Send every",
+          "buffer_points": "Points kept while offline"
+        }
+      }
+    }
+  },
+  "entity": {
+    "switch": {
+      "sharing": {
+        "name": "Sharing"
+      }
+    },
+    "sensor": {
+      "status": {
+        "name": "Status",
+        "state": {
+          "ok": "OK",
+          "waiting": "Waiting for internet",
+          "rejected": "Rejected",
+          "paused": "Paused"
+        },
+        "state_attributes": {
+          "message": {
+            "name": "Message"
+          }
+        }
+      },
+      "buffered_points": {
+        "name": "Buffered points"
+      },
+      "last_point": {
+        "name": "Last point logged"
+      },
+      "last_send": {
+        "name": "Last send"
+      }
+    }
+  },
+  "issues": {
+    "rejected": {
+      "title": "noforeignland refused {title}'s track",
+      "description": "noforeignland answered: {message}. Sending is stopped and the positions are kept. Check the boat API key and the integration key (the entry's ⋮ → Reconfigure); sending starts again after that, or after a reload."
+    }
+  }
+}

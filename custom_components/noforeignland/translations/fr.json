@@ -1,0 +1,88 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Partager la trace du bateau sur noforeignland",
+        "description": "Les positions sont gardées pendant les coupures d'internet et envoyées au retour de la connexion. Rien n'est envoyé avant la première position enregistrée.",
+        "data": {
+          "source": "Position du bateau",
+          "boat_key": "Clé API du bateau",
+          "integration_key": "Clé d'intégration"
+        },
+        "data_description": {
+          "source": "Un suivi d'appareil, par exemple le bateau de Vigie",
+          "boat_key": "Sur le site de noforeignland : Compte → Paramètres → Suivi du bateau → Clé API",
+          "integration_key": "La clé fournie par noforeignland pour cette intégration (support@noforeignland.com)"
+        }
+      },
+      "reconfigure": {
+        "title": "Changer les clés",
+        "data": {
+          "boat_key": "Clé API du bateau",
+          "integration_key": "Clé d'intégration"
+        }
+      }
+    },
+    "error": {
+      "boat_key": "Saisissez la clé API du bateau",
+      "integration_key": "La clé d'intégration est un UUID, par exemple 0f8fad5b-d9cb-469f-a165-70867728950e"
+    },
+    "abort": {
+      "already_configured": "Cette position est déjà partagée",
+      "reconfigure_successful": "Clés changées : l'envoi reprend"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Enregistrement et envoi",
+        "data": {
+          "sample_seconds": "Vérifier la position toutes les",
+          "min_move_m": "Déplacement minimal",
+          "min_speed_kn": "Vitesse minimale",
+          "keepalive_hours": "Un point à l'arrêt toutes les",
+          "send_minutes": "Envoyer toutes les",
+          "buffer_points": "Points gardés hors connexion"
+        }
+      }
+    }
+  },
+  "entity": {
+    "switch": {
+      "sharing": {
+        "name": "Partage"
+      }
+    },
+    "sensor": {
+      "status": {
+        "name": "État",
+        "state": {
+          "ok": "OK",
+          "waiting": "En attente d'internet",
+          "rejected": "Refusé",
+          "paused": "En pause"
+        },
+        "state_attributes": {
+          "message": {
+            "name": "Message"
+          }
+        }
+      },
+      "buffered_points": {
+        "name": "Points en attente"
+      },
+      "last_point": {
+        "name": "Dernier point enregistré"
+      },
+      "last_send": {
+        "name": "Dernier envoi"
+      }
+    }
+  },
+  "issues": {
+    "rejected": {
+      "title": "noforeignland a refusé la trace de {title}",
+      "description": "noforeignland a répondu : {message}. L'envoi est arrêté et les positions sont gardées. Vérifiez la clé API du bateau et la clé d'intégration (⋮ de l'entrée → Reconfigurer) ; l'envoi reprend ensuite, ou après un rechargement."
+    }
+  }
+}

@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stamp version into manifest
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          jq --arg v "$VERSION" '.version = $v' custom_components/noforeignland/manifest.json > manifest.tmp
+          mv manifest.tmp custom_components/noforeignland/manifest.json
+      - name: Build noforeignland.zip (HACS zip_release)
+        run: |
+          cd custom_components/noforeignland
+          zip -r ../../noforeignland.zip . -x '*__pycache__*'
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PRE=""
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then PRE="--prerelease"; fi
+          gh release create "$GITHUB_REF_NAME" noforeignland.zip \
+            --title "$GITHUB_REF_NAME" --generate-notes $PRE

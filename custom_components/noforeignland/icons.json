@@ -1,0 +1,9 @@
+{
+  "entity": {
+    "sensor": {
+      "status": { "default": "mdi:cloud-check-outline" },
+      "last_point": { "default": "mdi:map-marker-check" },
+      "last_send": { "default": "mdi:cloud-upload-outline" }
+    }
+  }
+}
