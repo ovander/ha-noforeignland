@@ -116,7 +116,9 @@ class NflConfigFlow(ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             errors = _keys_errors(user_input)
             if not errors:
-                return self.async_update_reload_and_abort(entry, data_updates=_keys(user_input))
+                # The entry's update listener reloads it: a reloading method as well is an
+                # error from Home Assistant 2026.12 (ovander/ha-vigie#115)
+                return self.async_update_and_abort(entry, data_updates=_keys(user_input))
         schema = vol.Schema(
             {vol.Required(CONF_BOAT_KEY): SECRET, vol.Optional(CONF_INTEGRATION_KEY): SECRET}
         )
