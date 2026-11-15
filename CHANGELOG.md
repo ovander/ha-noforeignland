@@ -16,6 +16,10 @@ for one meanwhile).
   its update listener (Home Assistant 2026.12 refuses a second reload from the flow)
   (ovander/ha-vigie#115).
 
+### Documentation
+- Installation from Home Assistant's **Marketplace** (2026.11 replaces HACS); the HACS steps
+  stay for 2026.2 to 2026.10 (ovander/ha-vigie#116).
+
 ### Changed
 - noforeignland's integration key is built into the integration, as in noforeignland's own
   SignalK plugin: setup asks only for the boat's API key. An optional *Integration key*
