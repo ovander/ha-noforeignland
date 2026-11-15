@@ -5,6 +5,21 @@ versioning: SemVer.
 
 ## [Unreleased]
 
+## [0.1.0-beta.2] - 2026-11-15
+
+Ready for Home Assistant 2026.12: **Reconfigure** (new keys) would have failed there. The
+integration key is now built in (still empty until noforeignland issues it, so setup asks
+for one meanwhile).
+
+### Fixed
+- Reconfigure works with Home Assistant 2026.12 and later: the entry is reloaded once, by
+  its update listener (Home Assistant 2026.12 refuses a second reload from the flow)
+  (ovander/ha-vigie#115).
+
+### Documentation
+- Installation from Home Assistant's **Marketplace** (2026.11 replaces HACS); the HACS steps
+  stay for 2026.2 to 2026.10 (ovander/ha-vigie#116).
+
 ### Changed
 - noforeignland's integration key is built into the integration, as in noforeignland's own
   SignalK plugin: setup asks only for the boat's API key. An optional *Integration key*
@@ -26,5 +41,6 @@ sent before a position is logged and the send time comes.
   *Status*, *Buffered points*, *Last point logged* and *Last send* sensors; a repair notice
   when noforeignland refuses a key; diagnostics with the keys redacted. English and French.
 
-[Unreleased]: https://github.com/ovander/ha-noforeignland/compare/v0.1.0-beta.1...HEAD
+[Unreleased]: https://github.com/ovander/ha-noforeignland/compare/v0.1.0-beta.2...HEAD
+[0.1.0-beta.2]: https://github.com/ovander/ha-noforeignland/compare/v0.1.0-beta.1...v0.1.0-beta.2
 [0.1.0-beta.1]: https://github.com/ovander/ha-noforeignland/releases/tag/v0.1.0-beta.1

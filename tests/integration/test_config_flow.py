@@ -75,6 +75,7 @@ async def test_reconfigure_keys(hass: HomeAssistant, boat: Boat) -> None:
     entry.add_to_hass(hass)
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
+    before = entry.runtime_data
     result = await entry.start_reconfigure_flow(hass)
     result = await hass.config_entries.flow.async_configure(
         result["flow_id"], {"boat_key": "x", "integration_key": "bad"}
@@ -88,6 +89,11 @@ async def test_reconfigure_keys(hass: HomeAssistant, boat: Boat) -> None:
     assert result["reason"] == "reconfigure_successful"
     assert entry.data["boat_key"] == "new-boat" and entry.data["integration_key"] == new_key
     assert entry.data["source"] == SOURCE
+    # Reloaded once, by the entry's update listener, with the new keys (ovander/ha-vigie#115)
+    await hass.async_block_till_done()
+    assert entry.state is config_entries.ConfigEntryState.LOADED
+    assert entry.runtime_data is not before
+    assert entry.runtime_data.entry.data["boat_key"] == "new-boat"
 
 
 async def test_options_defaults_and_change(hass: HomeAssistant, boat: Boat) -> None:

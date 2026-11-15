@@ -32,7 +32,7 @@ somewhere that should stay private.
 
 ## Requirements
 
-- Home Assistant 2026.2.0 or later, with HACS.
+- Home Assistant 2026.2.0 or later (its *Marketplace* from 2026.11; HACS before).
 - A position: for example [Vigie](https://github.com/ovander/ha-vigie)'s
   `device_tracker.<boat>`.
 - Your **boat API key**: on noforeignland's website, *Account → Settings → Boat tracking →
@@ -44,11 +44,30 @@ key* field; leave that field empty once a release includes it.
 
 ## Installation
 
+Only beta versions (pre-releases) exist for now.
+
+**Home Assistant 2026.11 or later: the Marketplace.**
+
+1. *Settings → Marketplace → **Add from link*** (top right). *GitHub link*:
+   `ovander/ha-noforeignland` → **Add**. The first time, the Marketplace asks you to connect
+   GitHub: open the link it shows, sign in and enter the code.
+2. Allow beta versions: *Settings → Devices & services → Marketplace* → the
+   *noforeignland tracking* device. Its **Pre-release** switch is hidden at first: open the
+   entities not shown, select *Pre-release*, ⚙ settings → **Enabled** → Update. Then turn
+   the switch **on**.
+3. *Settings → Marketplace → noforeignland tracking* → **Install**. The setup opens straight
+   away (step 4 below), no restart.
+
+**Home Assistant 2026.2 to 2026.10: HACS.**
+
 1. HACS → ⋮ → *Custom repositories* → `https://github.com/ovander/ha-noforeignland`, type
    **Integration**.
-2. Open *noforeignland tracking*, **Download** (only beta versions exist for now: turn on
-   *Show beta versions* if HACS offers an older one), then restart Home Assistant.
-3. *Settings → Devices & services → + Add integration → noforeignland tracking*: pick the
+2. Open *noforeignland tracking*, **Download** (turn on *Show beta versions* if HACS offers
+   an older one), then restart Home Assistant.
+
+**Then, either way:**
+
+4. *Settings → Devices & services → + Add integration → noforeignland tracking*: pick the
    boat's position (Vigie's boat is proposed) and enter its API key. Nothing is sent during
    setup.
 
