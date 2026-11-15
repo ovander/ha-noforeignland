@@ -37,5 +37,6 @@ sent before a position is logged and the send time comes.
   *Status*, *Buffered points*, *Last point logged* and *Last send* sensors; a repair notice
   when noforeignland refuses a key; diagnostics with the keys redacted. English and French.
 
-[Unreleased]: https://github.com/ovander/ha-noforeignland/compare/v0.1.0-beta.1...HEAD
+[Unreleased]: https://github.com/ovander/ha-noforeignland/compare/v0.1.0-beta.2...HEAD
+[0.1.0-beta.2]: https://github.com/ovander/ha-noforeignland/compare/v0.1.0-beta.1...v0.1.0-beta.2
 [0.1.0-beta.1]: https://github.com/ovander/ha-noforeignland/releases/tag/v0.1.0-beta.1
