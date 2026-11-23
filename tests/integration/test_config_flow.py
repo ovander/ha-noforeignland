@@ -39,7 +39,7 @@ async def test_f_nfl_01_key_errors(hass: HomeAssistant, boat: Boat) -> None:
         DOMAIN, context={"source": config_entries.SOURCE_USER}
     )
     result = await hass.config_entries.flow.async_configure(
-        result["flow_id"], {**USER_INPUT, "boat_key": "  ", "integration_key": "not-a-uuid"}
+        result["flow_id"], {**USER_INPUT, "boat_key": "  ", "integration_key": "not a key"}
     )
     assert result["type"] is FlowResultType.FORM
     assert result["errors"] == {"boat_key": "boat_key", "integration_key": "integration_key"}
@@ -130,12 +130,44 @@ async def test_f_nfl_01_built_in_key_needs_only_the_boat_key(
 
 
 async def test_f_nfl_01_no_built_in_key_asks_for_one(hass: HomeAssistant, boat: Boat) -> None:
+    """ovander/ha-vigie#125: without a built-in key, the integration key field is required."""
     with NO_BUILT_IN:
         result = await hass.config_entries.flow.async_init(
             DOMAIN, context={"source": config_entries.SOURCE_USER}
         )
+        fields = {str(k): type(k).__name__ for k in result["data_schema"].schema}
+        assert fields["integration_key"] == "Required" and fields["boat_key"] == "Required"
         result = await hass.config_entries.flow.async_configure(
-            result["flow_id"], {"source": SOURCE, "boat_key": BOAT_KEY}
+            result["flow_id"], {"source": SOURCE, "boat_key": BOAT_KEY, "integration_key": " "}
         )
     assert result["type"] is FlowResultType.FORM
     assert result["errors"] == {"integration_key": "integration_key_needed"}
+
+
+async def test_f_nfl_01_built_in_key_makes_the_field_optional(
+    hass: HomeAssistant, boat: Boat
+) -> None:
+    with WITH_BUILT_IN:
+        result = await hass.config_entries.flow.async_init(
+            DOMAIN, context={"source": config_entries.SOURCE_USER}
+        )
+    fields = {str(k): type(k).__name__ for k in result["data_schema"].schema}
+    assert fields["integration_key"] == "Optional"
+
+
+async def test_reconfigure_empty_integration_key_keeps_it(hass: HomeAssistant, boat: Boat) -> None:
+    """ovander/ha-vigie#125: change the boat key without typing the integration key again."""
+    entry = make_entry()
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+    before = entry.data["integration_key"]
+    assert before
+    with NO_BUILT_IN:
+        result = await entry.start_reconfigure_flow(hass)
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {"boat_key": "another-boat", "integration_key": ""}
+        )
+    assert result["reason"] == "reconfigure_successful"
+    assert entry.data["boat_key"] == "another-boat"
+    assert entry.data["integration_key"] == before

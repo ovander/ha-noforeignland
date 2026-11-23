@@ -6,8 +6,8 @@ Positions logged while the boat has no internet are kept and sent when the conne
 returns: the track has no gap. Companion of [Vigie](https://github.com/ovander/ha-vigie),
 but it works with any `device_tracker` that has a latitude and longitude.
 
-> **Status: beta (P8).** Built and tested against a simulated noforeignland; the first real
-> sends wait for noforeignland's integration key, which will then be built in.
+> **Status: beta (P8).** Built and tested against a simulated noforeignland. Real sends
+> need your own boat key and integration key from noforeignland (see *Requirements*).
 
 ## What it does
 
@@ -35,12 +35,21 @@ somewhere that should stay private.
 - Home Assistant 2026.2.0 or later (its *Marketplace* from 2026.11; HACS before).
 - A position: for example [Vigie](https://github.com/ovander/ha-vigie)'s
   `device_tracker.<boat>`.
-- Your **boat API key**: on noforeignland's website, *Account → Settings → Boat tracking →
-  API Key*. That is the only key you enter.
+- **Two keys from noforeignland, which you obtain yourself.** This integration does not
+  provide either of them, and getting them is your responsibility:
+  - your **boat API key**: on noforeignland's website, *Account → Settings → Boat tracking →
+    API Key*;
+  - an **integration key**, which noforeignland gives for the software that sends the
+    track: ask noforeignland for one. Do not reuse a key issued to another program (for
+    example the SignalK plugin's): it belongs to that program.
 
-noforeignland's key for this integration is built in, as in noforeignland's own SignalK
-plugin. Until noforeignland has issued it, setup asks for one in the optional *Integration
-key* field; leave that field empty once a release includes it.
+**You must respect noforeignland's terms, guidelines and rules for these keys**: use them
+only as noforeignland allows, keep them private (do not publish or share them), and stay
+within its fair-use limits. The defaults (a point logged at most every minute, sent once
+an hour) are meant to stay within them; changing the options is your responsibility too.
+
+Both are entered at setup, and can be changed later with *Reconfigure*. A wrong key is
+reported by the first send: the status sensor shows *rejected* and a repair explains why.
 
 ## Installation
 

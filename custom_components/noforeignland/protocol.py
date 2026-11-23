@@ -23,12 +23,14 @@ TIMEOUT_S = 30.0  # times the attempt number
 # SPEC OD-45). Empty until noforeignland issues it: setup then asks for one.
 BUILTIN_INTEGRATION_KEY = ""
 
-_UUID = re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
+# A key as noforeignland gives it: no fixed format is promised, so only obvious typos are
+# refused (a space, too short); a wrong key is reported by the first send (ovander/ha-vigie#125)
+_KEY = re.compile(r"^\S{8,128}$")
 
 
 def is_integration_key(key: str) -> bool:
-    """noforeignland's integration keys are UUIDs (X-12 §4.1)."""
-    return bool(_UUID.match(key.strip()))
+    """8 to 128 characters, no space: the keys seen so far are UUIDs (X-12 §4.1)."""
+    return bool(_KEY.match(key.strip()))
 
 
 def integration_key(override: str | None) -> str | None:
