@@ -43,6 +43,11 @@ somewhere that should stay private.
     track: ask noforeignland for one. Do not reuse a key issued to another program (for
     example the SignalK plugin's): it belongs to that program.
 
+**You must respect noforeignland's terms, guidelines and rules for these keys**: use them
+only as noforeignland allows, keep them private (do not publish or share them), and stay
+within its fair-use limits. The defaults (a point logged at most every minute, sent once
+an hour) are meant to stay within them; changing the options is your responsibility too.
+
 Both are entered at setup, and can be changed later with *Reconfigure*. A wrong key is
 reported by the first send: the status sensor shows *rejected* and a repair explains why.
 

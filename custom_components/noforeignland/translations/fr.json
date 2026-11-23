@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Partager la trace du bateau sur noforeignland",
-        "description": "Les positions sont gardées pendant les coupures d'internet et envoyées au retour de la connexion. Rien n'est envoyé avant la première position enregistrée.",
+        "description": "Les clés sont les vôtres : vous les obtenez auprès de noforeignland et devez respecter ses règles d'utilisation. Les positions sont gardées pendant les coupures d'internet et envoyées au retour de la connexion. Rien n'est envoyé avant la première position enregistrée.",
         "data": {
           "source": "Position du bateau",
           "boat_key": "Clé API du bateau",
@@ -12,7 +12,7 @@
         "data_description": {
           "source": "Un suivi d'appareil, par exemple le bateau de Vigie",
           "boat_key": "Votre propre clé, sur le site de noforeignland : Compte → Paramètres → Suivi du bateau → Clé API.",
-          "integration_key": "Votre propre clé, obtenue auprès de noforeignland : cette intégration n'en fournit pas. L'obtenir est de votre ressort."
+          "integration_key": "Votre propre clé, obtenue auprès de noforeignland : cette intégration n'en fournit pas. L'obtenir, et l'utiliser comme les règles de noforeignland le permettent, est de votre ressort."
         }
       },
       "reconfigure": {

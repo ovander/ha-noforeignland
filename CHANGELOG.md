@@ -7,7 +7,8 @@ versioning: SemVer.
 
 ### Changed
 - You enter both keys yourself, and obtaining them from noforeignland is your
-  responsibility: the integration provides none. The *Integration key* field is required
+  responsibility, as is respecting noforeignland's rules for their use (README,
+  *Requirements*): the integration provides none. The *Integration key* field is required
   (it said "optional, leave empty", which was wrong), any key noforeignland gives is
   accepted (no longer only UUID-shaped ones), and *Reconfigure* keeps the integration key
   when its field is left empty (ovander/ha-vigie#125).

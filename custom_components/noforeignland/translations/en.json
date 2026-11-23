@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Share the boat's track on noforeignland",
-        "description": "Positions are kept through internet outages and sent when the connection returns. Nothing is sent before the first position is logged.",
+        "description": "The keys are yours: you obtain them from noforeignland and must respect its rules for their use. Positions are kept during internet outages and sent when the connection returns. Nothing is sent before the first position is logged.",
         "data": {
           "source": "Boat position",
           "boat_key": "Boat API key",
@@ -12,7 +12,7 @@
         "data_description": {
           "source": "A device tracker, for example Vigie's own boat",
           "boat_key": "Your own key, on noforeignland's website: Account → Settings → Boat tracking → API Key.",
-          "integration_key": "Your own key, obtained from noforeignland: this integration does not provide one. Getting it is up to you."
+          "integration_key": "Your own key, obtained from noforeignland: this integration does not provide one. Getting it, and using it as noforeignland's rules allow, is up to you."
         }
       },
       "reconfigure": {
