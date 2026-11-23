@@ -5,6 +5,13 @@ versioning: SemVer.
 
 ## [Unreleased]
 
+### Changed
+- You enter both keys yourself, and obtaining them from noforeignland is your
+  responsibility: the integration provides none. The *Integration key* field is required
+  (it said "optional, leave empty", which was wrong), any key noforeignland gives is
+  accepted (no longer only UUID-shaped ones), and *Reconfigure* keeps the integration key
+  when its field is left empty (ovander/ha-vigie#125).
+
 ## [0.1.0-beta.2] - 2026-11-15
 
 Ready for Home Assistant 2026.12: **Reconfigure** (new keys) would have failed there. The

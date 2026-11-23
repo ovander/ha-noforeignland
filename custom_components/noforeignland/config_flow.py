@@ -60,6 +60,13 @@ def vigie_tracker(hass: HomeAssistant) -> str | None:
     return None
 
 
+def _integration_key_field() -> vol.Marker:
+    """Entered by the user while this version has no key of its own (ovander/ha-vigie#125)."""
+    if protocol.integration_key(None) is None:
+        return vol.Required(CONF_INTEGRATION_KEY)
+    return vol.Optional(CONF_INTEGRATION_KEY)
+
+
 def _keys_errors(user_input: dict[str, Any]) -> dict[str, str]:
     errors: dict[str, str] = {}
     if not user_input[CONF_BOAT_KEY].strip():
@@ -100,7 +107,7 @@ class NflConfigFlow(ConfigFlow, domain=DOMAIN):
                     CONF_SOURCE, default=vigie_tracker(self.hass) or vol.UNDEFINED
                 ): EntitySelector(EntitySelectorConfig(domain="device_tracker")),
                 vol.Required(CONF_BOAT_KEY): SECRET,
-                vol.Optional(CONF_INTEGRATION_KEY): SECRET,
+                _integration_key_field(): SECRET,
             }
         )
         if user_input is not None:
@@ -114,6 +121,9 @@ class NflConfigFlow(ConfigFlow, domain=DOMAIN):
         entry = self._get_reconfigure_entry()
         errors: dict[str, str] = {}
         if user_input is not None:
+            # An empty integration key keeps the one entered before: only the boat key changes
+            if not user_input.get(CONF_INTEGRATION_KEY, "").strip():
+                user_input = {**user_input, CONF_INTEGRATION_KEY: entry.data[CONF_INTEGRATION_KEY]}
             errors = _keys_errors(user_input)
             if not errors:
                 # The entry's update listener reloads it: a reloading method as well is an

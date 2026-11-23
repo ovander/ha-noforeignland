@@ -81,11 +81,14 @@ def test_u_nfl_09_built_in_key_and_override(monkeypatch):
 
 
 def test_u_nfl_09_integration_key_format():
+    """ovander/ha-vigie#125: any key as noforeignland gives it; only obvious typos refused."""
     assert is_integration_key(KEY)
     assert is_integration_key(f" {KEY.upper()} ")
+    assert is_integration_key("nfl_ABCdef123")  # not a UUID: accepted
     assert not is_integration_key("")
-    assert not is_integration_key("my-key")
-    assert not is_integration_key(KEY[:-1])
+    assert not is_integration_key("my-key")  # too short
+    assert not is_integration_key("abc def ghi")  # a space
+    assert not is_integration_key("x" * 129)
 
 
 @pytest.mark.parametrize(

@@ -7,29 +7,29 @@
         "data": {
           "source": "Boat position",
           "boat_key": "Boat API key",
-          "integration_key": "Integration key (optional)"
+          "integration_key": "Integration key"
         },
         "data_description": {
           "source": "A device tracker, for example Vigie's own boat",
-          "boat_key": "On noforeignland's website: Account → Settings → Boat tracking → API Key",
-          "integration_key": "Leave empty: noforeignland's key for this integration is built in. Fill it in only if noforeignland gave you a key of your own."
+          "boat_key": "Your own key, on noforeignland's website: Account → Settings → Boat tracking → API Key.",
+          "integration_key": "Your own key, obtained from noforeignland: this integration does not provide one. Getting it is up to you."
         }
       },
       "reconfigure": {
         "title": "Change the keys",
         "data": {
           "boat_key": "Boat API key",
-          "integration_key": "Integration key (optional)"
+          "integration_key": "Integration key"
         },
         "data_description": {
-          "integration_key": "Leave empty: noforeignland's key for this integration is built in. Fill it in only if noforeignland gave you a key of your own."
+          "integration_key": "Leave empty to keep the current one."
         }
       }
     },
     "error": {
       "boat_key": "Enter the boat's API key",
-      "integration_key": "The integration key is a UUID, like 0f8fad5b-d9cb-469f-a165-70867728950e",
-      "integration_key_needed": "This version does not include noforeignland's key yet: enter an integration key"
+      "integration_key": "The integration key has no spaces and at least 8 characters",
+      "integration_key_needed": "Enter the integration key you obtained from noforeignland"
     },
     "abort": {
       "already_configured": "This position is already shared",

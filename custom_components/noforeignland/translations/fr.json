@@ -7,29 +7,29 @@
         "data": {
           "source": "Position du bateau",
           "boat_key": "Clé API du bateau",
-          "integration_key": "Clé d'intégration (facultatif)"
+          "integration_key": "Clé d'intégration"
         },
         "data_description": {
           "source": "Un suivi d'appareil, par exemple le bateau de Vigie",
-          "boat_key": "Sur le site de noforeignland : Compte → Paramètres → Suivi du bateau → Clé API",
-          "integration_key": "Laissez vide : la clé de noforeignland pour cette intégration est incluse. À remplir seulement si noforeignland vous a donné votre propre clé."
+          "boat_key": "Votre propre clé, sur le site de noforeignland : Compte → Paramètres → Suivi du bateau → Clé API.",
+          "integration_key": "Votre propre clé, obtenue auprès de noforeignland : cette intégration n'en fournit pas. L'obtenir est de votre ressort."
         }
       },
       "reconfigure": {
         "title": "Changer les clés",
         "data": {
           "boat_key": "Clé API du bateau",
-          "integration_key": "Clé d'intégration (facultatif)"
+          "integration_key": "Clé d'intégration"
         },
         "data_description": {
-          "integration_key": "Laissez vide : la clé de noforeignland pour cette intégration est incluse. À remplir seulement si noforeignland vous a donné votre propre clé."
+          "integration_key": "Laissez vide pour garder la clé actuelle."
         }
       }
     },
     "error": {
       "boat_key": "Saisissez la clé API du bateau",
-      "integration_key": "La clé d'intégration est un UUID, par exemple 0f8fad5b-d9cb-469f-a165-70867728950e",
-      "integration_key_needed": "Cette version n'inclut pas encore la clé de noforeignland : saisissez une clé d'intégration"
+      "integration_key": "La clé d'intégration n'a pas d'espace et compte au moins 8 caractères",
+      "integration_key_needed": "Saisissez la clé d'intégration obtenue auprès de noforeignland"
     },
     "abort": {
       "already_configured": "Cette position est déjà partagée",
