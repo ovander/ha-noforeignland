@@ -5,6 +5,11 @@ versioning: SemVer.
 
 ## [Unreleased]
 
+## [0.1.0-beta.3] - 2026-11-23
+
+Your keys, your responsibility: you enter both noforeignland keys yourself, and setup no
+longer blocks a key that is not shaped like a UUID or says to leave the field empty.
+
 ### Changed
 - You enter both keys yourself, and obtaining them from noforeignland is your
   responsibility, as is respecting noforeignland's rules for their use (README,
@@ -49,6 +54,7 @@ sent before a position is logged and the send time comes.
   *Status*, *Buffered points*, *Last point logged* and *Last send* sensors; a repair notice
   when noforeignland refuses a key; diagnostics with the keys redacted. English and French.
 
-[Unreleased]: https://github.com/ovander/ha-noforeignland/compare/v0.1.0-beta.2...HEAD
+[Unreleased]: https://github.com/ovander/ha-noforeignland/compare/v0.1.0-beta.3...HEAD
+[0.1.0-beta.3]: https://github.com/ovander/ha-noforeignland/compare/v0.1.0-beta.2...v0.1.0-beta.3
 [0.1.0-beta.2]: https://github.com/ovander/ha-noforeignland/compare/v0.1.0-beta.1...v0.1.0-beta.2
 [0.1.0-beta.1]: https://github.com/ovander/ha-noforeignland/releases/tag/v0.1.0-beta.1
